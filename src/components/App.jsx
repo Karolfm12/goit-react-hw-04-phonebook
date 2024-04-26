@@ -1,5 +1,5 @@
 import { INITIAL_STATE } from 'constansts/initial-form-state';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ContactList } from './ContactList.jsx';
 import { FilterList } from './FilterList.jsx';
 import { Input } from './Input.jsx';
@@ -8,10 +8,18 @@ export const App = () => {
   const [userData, setUserData] = useState(INITIAL_STATE);
   const [contactList, setContactList] = useState([]);
 
-  // const [contacts]
+  useEffect(() => {
+    const storedData = localStorage.getItem('contactList');
+    if (storedData) {
+      setContactList(JSON.parse(storedData));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('contactList', JSON.stringify(contactList));
+  }, [contactList]);
 
   const handleOnChange = (e, name) => {
-    // const { name, value } = e.target;
     setUserData(prev => ({
       ...prev,
       [e.target.name]: e.target.value,
